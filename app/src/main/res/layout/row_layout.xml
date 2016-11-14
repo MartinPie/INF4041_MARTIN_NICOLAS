@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
-        android:id="@+id/img_android"
+        android:id="@+id/img_drink"
         android:adjustViewBounds="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/tv_android"
+        android:id="@+id/tv_drink"
         android:layout_gravity="center"
         android:textColor="#FFFFFF"
         android:textStyle="bold"

@@ -25,6 +25,9 @@ public class Drink {
             this.setName(json.getString("strDrink"));
             this.setImgageUrl(json.getString("strDrinkThumb"));
 
+            if (this.getImgageUrl().equals("null"))
+                this.setImgageUrl("http://www.novelupdates.com/img/noimagefound.jpg");
+
             if (!isShort) {
                 this.setCategory(json.getString("strCategory"));
                 this.setAlcoholic(json.getString("strAlcoholic"));
@@ -46,6 +49,10 @@ public class Drink {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Drink() {
+
     }
 
     public int getId() {

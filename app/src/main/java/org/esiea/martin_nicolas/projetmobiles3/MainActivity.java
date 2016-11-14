@@ -3,6 +3,9 @@ package org.esiea.martin_nicolas.projetmobiles3;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -15,16 +18,45 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public ArrayList<Drink> allDrinks;
+    public boolean isReady;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            URL url = new URL("http://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita");
+            this.isReady = false;
+
+            RecyclerView recyclerView = (RecyclerView)findViewById(R.id.card_recycler_view);
+            recyclerView.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(layoutManager);
+
+            URL url = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic");
 
             HttpJsonRequest h = new HttpJsonRequest();
             h.execute(url);
+
+            while (!this.isReady){
+
+            }
+
+            DrinkDataAdapter adapter = new DrinkDataAdapter(getApplicationContext(), this.allDrinks);
+            recyclerView.setAdapter(adapter);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void initViews(ArrayList<Drink> drinks){
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.card_recycler_view);
+
+        try {
+            DrinkDataAdapter adapter = new DrinkDataAdapter(getApplicationContext(), drinks);
+            recyclerView.setAdapter(adapter);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -62,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
 
                 e.printStackTrace();
             }
+
+            //initViews(drinks);
+
+            allDrinks = drinks;
+            isReady = true;
 
             return null;
         }
