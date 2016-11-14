@@ -34,7 +34,7 @@ public class DrinkDataAdapter extends RecyclerView.Adapter<DrinkDataAdapter.View
     public void onBindViewHolder(DrinkDataAdapter.ViewHolder viewHolder, int i) {
 
         viewHolder.tv_drink.setText(this.drinks.get(i).getName());
-        Picasso.with(context).load(this.drinks.get(i).getImgageUrl()).resize(240, 120).into(viewHolder.img_drink);
+        Picasso.with(context).load(this.drinks.get(i).getImgageUrl()).into(viewHolder.img_drink);
     }
 
     @Override
