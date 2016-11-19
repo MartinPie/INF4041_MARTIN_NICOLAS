@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:background="@color/colorPrimaryDark"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/drink_element">
     <ImageView
         android:id="@+id/img_drink"
         android:adjustViewBounds="true"
