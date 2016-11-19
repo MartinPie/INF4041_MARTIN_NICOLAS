@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Cock\'Tail</string>
+    <string name="url_prefix_recherche">https://www.google.fr/search?q=Où boire le cocktail </string>
+    <string name="ou_en_boire">Où en boire ?</string>
+    <string name="menu_search">Recherche</string>
+    <string name="menu_refresh">Rafraichir</string>
 </resources>

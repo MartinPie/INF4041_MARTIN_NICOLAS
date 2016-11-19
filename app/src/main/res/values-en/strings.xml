@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Cock\'Tail</string>
+    <string name="url_prefix_recherche">https://www.google.com/search?q=Where drink cocktail </string>
+    <string name="ou_en_boire">Where drink it ?</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_refresh">Refresh</string>
+</resources>

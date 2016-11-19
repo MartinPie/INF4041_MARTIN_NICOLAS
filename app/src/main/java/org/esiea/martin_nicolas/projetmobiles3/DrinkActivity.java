@@ -1,10 +1,13 @@
 package org.esiea.martin_nicolas.projetmobiles3;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -58,6 +61,19 @@ public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.
         Toast.makeText(this, this.drink.getName(), Toast.LENGTH_SHORT).show();
 
         ImageView img = (ImageView) findViewById(R.id.detail_img_drink);
+
+        Button button= (Button) findViewById(R.id.btn_internet_drink);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url_prefif = getString(R.string.url_prefix_recherche);
+
+                String url = url_prefif + " " + drink.getName();
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
 
         Picasso.with(this).load(this.drink.getImgageUrl()).into(img);
     }
