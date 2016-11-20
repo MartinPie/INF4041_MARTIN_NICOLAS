@@ -6,6 +6,10 @@
         android:showAsAction="ifRoom"
         android:title="@string/menu_search"/>
     <item
+        android:id="@+id/menu_random"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_random"/>
+    <item
         android:id="@+id/menu_refresh"
         android:showAsAction="ifRoom"
         android:title="@string/menu_refresh"/>

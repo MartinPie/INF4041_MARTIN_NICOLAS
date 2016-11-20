@@ -4,4 +4,13 @@
     <string name="ou_en_boire">Where drink it ?</string>
     <string name="menu_search">Search</string>
     <string name="menu_refresh">Refresh</string>
+    <string name="menu_random">Random</string>
+    <string name="category_prompt">Search by category</string>
+    <string name="glass_prompt">Search by glass</string>
+    <string name="ingredient_prompt">Search by ingredient</string>
+    <string name="submit">Submit</string>
+    <string name="name_search">Name</string>
+    <string name="category">Category</string>
+    <string name="glass">Glass</string>
+    <string name="ingredient">Ingredient</string>
 </resources>
