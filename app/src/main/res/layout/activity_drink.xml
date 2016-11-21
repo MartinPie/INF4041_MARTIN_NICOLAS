@@ -1,23 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.esiea.martin_nicolas.projetmobiles3.DrinkActivity">
-    <ImageView
-        android:id="@+id/detail_img_drink"
-        android:adjustViewBounds="true"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        tools:context="org.esiea.martin_nicolas.projetmobiles3.DrinkActivity">
 
-    <Button
-        android:id="@+id/btn_internet_drink"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/ou_en_boire" />
+        <Button
+            android:id="@+id/btn_internet_drink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ou_en_boire" />
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/detail_img_drink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detail_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/category_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detail_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/alcoholic_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detail_alcoholic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/glass_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detail_glass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/instructions_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detail_instruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ingredients_label"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ingredients_recycler_view"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</ScrollView>

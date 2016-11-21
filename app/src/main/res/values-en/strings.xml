@@ -13,4 +13,12 @@
     <string name="category">Category</string>
     <string name="glass">Glass</string>
     <string name="ingredient">Ingredient</string>
+
+    <string name="name_label">Name :</string>
+    <string name="category_label">Category :</string>
+    <string name="alcoholic_label">Alcoholic :</string>
+    <string name="glass_label">Glass :</string>
+    <string name="instructions_label">Instructions :</string>
+    <string name="ingredients_label">Ingregients :</string>
+
 </resources>

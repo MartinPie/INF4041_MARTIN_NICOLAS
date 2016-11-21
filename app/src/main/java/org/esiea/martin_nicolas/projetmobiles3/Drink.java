@@ -17,7 +17,7 @@ public class Drink {
     private String glass;
     private String instruction;
     private String imgageUrl;
-    private HashMap<String, String> ingredients;
+    private ArrayList<Ingredient> ingredients;
 
     public Drink(JSONObject json, boolean isShort) {
         try {
@@ -34,14 +34,14 @@ public class Drink {
                 this.setGlass(json.getString("strGlass"));
                 this.setInstruction(json.getString("strInstructions"));
 
-                this.ingredients = new HashMap<String, String>();
+                this.ingredients = new ArrayList<>();
 
                 for (int i = 1; i <= 15; i++) {
                     String ingredient = json.getString("strIngredient" + i);
                     String measure = json.getString("strMeasure" + i);
 
                     if (ingredient != null) {
-                        this.ingredients.put(ingredient, measure);
+                        this.ingredients.add(new Ingredient(ingredient, measure));
                     }
                 }
             }
@@ -111,11 +111,11 @@ public class Drink {
         this.imgageUrl = imgageUrl;
     }
 
-    public HashMap<String, String> getIngredients() {
+    public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(HashMap<String, String> ingredients) {
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 

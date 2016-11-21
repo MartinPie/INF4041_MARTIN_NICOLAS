@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
             setContentView(R.layout.activity_main);
             drinks = new ArrayList<>();
 
-            this.recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
+            this.recyclerView = (RecyclerView) findViewById(R.id.drinks_recycler_view);
             this.recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
             this.recyclerView.setLayoutManager(layoutManager);
