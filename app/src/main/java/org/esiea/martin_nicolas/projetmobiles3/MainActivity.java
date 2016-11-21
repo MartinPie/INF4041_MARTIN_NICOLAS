@@ -1,6 +1,9 @@
 package org.esiea.martin_nicolas.projetmobiles3;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,11 +23,90 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.OnDrinkClickListener, HttpJsonRequest.OnGetJsonListener {
+public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.OnDrinkClickListener{
+
+    public class MyReceiver extends BroadcastReceiver {
+        public static final String ACTION_RESP = "com.myapp.intent.action.TEXT_TO_DISPLAY";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String text = intent.getStringExtra(JsonPullService.SOURCE_URL);
+
+            try {
+                JSONObject jsonObject = new JSONObject(text);
+                OnGetJson(jsonObject);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private MyReceiver receiver;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        drinks = new ArrayList<>();
+
+        this.recyclerView = (RecyclerView) findViewById(R.id.drinks_recycler_view);
+        this.recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
+        this.recyclerView.setLayoutManager(layoutManager);
+
+        // on initialise notre broadcast
+        receiver = new MyReceiver();
+        // on lance le service
+        Intent jsonIntent = new Intent(this, JsonPullService.class);
+
+        Intent intent = getIntent();
+
+        String category = intent .getStringExtra("category");
+        String glass = intent .getStringExtra("glass");
+        String ingredient = intent .getStringExtra("ingredient");
+        String name = intent .getStringExtra("name");
+
+
+        if (glass != null || category != null || ingredient != null) {
+
+            if (!glass.equals(getResources().getString(R.string.glass))) {
+                jsonIntent.putExtra(JsonPullService.URL, "http://www.thecocktaildb.com/api/json/v1/1/filter.php?g=" + glass.replace(" ", "_"));
+            }
+            if (!category.equals(getResources().getString(R.string.category))) {
+                jsonIntent.putExtra(JsonPullService.URL, "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=" + category.replace(" ", "_"));
+            }
+            if (!ingredient.equals(getResources().getString(R.string.ingredient))) {
+                jsonIntent.putExtra(JsonPullService.URL, "http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=" + ingredient.replace(" ", "_"));
+            }
+
+        } else {
+            jsonIntent.putExtra(JsonPullService.URL, "http://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic");
+        }
+        startService(jsonIntent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // on déclare notre Broadcast Receiver
+        IntentFilter filter = new IntentFilter(MyReceiver.ACTION_RESP);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // on désenregistre notre broadcast
+        unregisterReceiver(receiver);
+    }
 
     private RecyclerView recyclerView;
     private ArrayList<Drink> drinks;
 
+    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -32,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
             setContentView(R.layout.activity_main);
             drinks = new ArrayList<>();
 
-            this.recyclerView = (RecyclerView) findViewById(R.id.drinks_recycler_view);
+            this.recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
             this.recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
             this.recyclerView.setLayoutManager(layoutManager);
@@ -76,6 +158,8 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
         }
     }
 
+    */
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -106,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
         startActivity(intent);
     }
 
+
     public void OnGetJson(JSONObject jsonObject) {
 
         try {
@@ -123,15 +208,26 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
 
             if (this.drinks.isEmpty()) {
                 this.drinks = tempDrinks;
-                DrinkDataAdapter  adapter = new DrinkDataAdapter(getApplicationContext(), this.drinks, this);
+                DrinkDataAdapter adapter = new DrinkDataAdapter(getApplicationContext(), this.drinks, this);
                 this.recyclerView.setAdapter(adapter);
             } else {
-                for (Drink drink : tempDrinks) {
-                    if (!this.drinks.contains(drink)) {
+                for (int i = 0; i < this.drinks.size(); i++) {
+                    Drink drink = this.drinks.get(i);
+
+                    if (!tempDrinks.contains(drink)) {
+                        this.recyclerView.removeViewAt(i);
+                        this.recyclerView.getAdapter().notifyItemRemoved(i);
+                        this.recyclerView.getAdapter().notifyItemRangeChanged(i, this.drinks.size());
+                        this.recyclerView.getAdapter().notifyDataSetChanged();
                         this.drinks.remove(drink);
+                        i--;
                     }
                 }
-                this.recyclerView.getAdapter().notifyDataSetChanged();
+
+//                this.recyclerView.removeAllViews();
+//                ((DrinkDataAdapter)this.recyclerView.getAdapter()).setDrinks(this.drinks);
+
+
             }
 
 
@@ -139,4 +235,5 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
             e.printStackTrace();
         }
     }
+
 }
