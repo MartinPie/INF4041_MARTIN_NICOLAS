@@ -1,8 +1,9 @@
 package org.esiea.martin_nicolas.projetmobiles3;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -14,28 +15,63 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.OnDrinkClickListener, HttpJsonRequest.OnGetJsonListener {
 
     private RecyclerView recyclerView;
+    private ArrayList<Drink> drinks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            drinks = new ArrayList<>();
 
-            this.recyclerView = (RecyclerView)findViewById(R.id.card_recycler_view);
+            this.recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
             this.recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),3);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
             this.recyclerView.setLayoutManager(layoutManager);
 
-            URL url = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic");
+            Intent intent = getIntent();
 
-            HttpJsonRequest h = new HttpJsonRequest(this, this);
-            h.execute(url);
-        }
-        catch (Exception e){
+            String category = intent.getStringExtra("category");
+            String glass = intent.getStringExtra("glass");
+            String ingredient = intent.getStringExtra("ingredient");
+            String name = intent.getStringExtra("name");
+
+
+            if (glass != null || category != null || ingredient != null) {
+
+                if (!glass.equals(getResources().getString(R.string.glass))) {
+                    URL urlGlass = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?g=" + glass.replace(" ", "_"));
+                    HttpJsonRequest hGlass = new HttpJsonRequest(this, this);
+                    hGlass.execute(urlGlass);
+                }
+
+                if (!category.equals(getResources().getString(R.string.category))) {
+                    URL urlCategory = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=" + category.replace(" ", "_"));
+                    HttpJsonRequest hCategory = new HttpJsonRequest(this, this);
+                    hCategory.execute(urlCategory);
+                }
+                if (!ingredient.equals(getResources().getString(R.string.ingredient))) {
+                    URL urlIngredient = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=" + ingredient.replace(" ", "_"));
+                    HttpJsonRequest hIngredient = new HttpJsonRequest(this, this);
+                    hIngredient.execute(urlIngredient);
+                }
+
+            } else {
+
+                URL url = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic");
+
+                HttpJsonRequest h = new HttpJsonRequest(this, this);
+                h.execute(url);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -50,15 +86,14 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.menu_refresh), Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.menu_search:
-                Toast.makeText(this, "SearchActivity", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.menu_random:
-                Toast.makeText(this, "Random", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.menu_random), Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -73,24 +108,35 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
 
     public void OnGetJson(JSONObject jsonObject) {
 
-        ArrayList<Drink> drinks = new ArrayList<>();
-
         try {
             // On récupère le tableau d'objets qui nous concernent
             JSONArray array = jsonObject.getJSONArray("drinks");
 
-            // Pour tous les objets on récupère les infos
+            ArrayList<Drink> tempDrinks = new ArrayList<Drink>();
+
             for (int i = 0; i < array.length(); i++) {
                 // On récupère un objet JSON du tableau
                 JSONObject obj = new JSONObject(array.getString(i));
-
-                drinks.add(new Drink(obj, true));
+                // Pour tous les objets on récupère les infos
+                tempDrinks.add(new Drink(obj, true));
             }
+
+            if (this.drinks.isEmpty()) {
+                this.drinks = tempDrinks;
+                DrinkDataAdapter  adapter = new DrinkDataAdapter(getApplicationContext(), this.drinks, this);
+                this.recyclerView.setAdapter(adapter);
+            } else {
+                for (Drink drink : tempDrinks) {
+                    if (!this.drinks.contains(drink)) {
+                        this.drinks.remove(drink);
+                    }
+                }
+                this.recyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        DrinkDataAdapter adapter = new DrinkDataAdapter(getApplicationContext(), drinks, this);
-        this.recyclerView.setAdapter(adapter);
     }
 }

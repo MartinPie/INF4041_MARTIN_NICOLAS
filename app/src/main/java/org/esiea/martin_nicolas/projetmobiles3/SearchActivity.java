@@ -1,21 +1,19 @@
 package org.esiea.martin_nicolas.projetmobiles3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.Toast;
-
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SearchActivity extends AppCompatActivity implements HttpJsonRequest.OnGetJsonListener, View.OnClickListener {
 
@@ -36,26 +34,12 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
         searchIngredient = (Spinner) findViewById(R.id.searchIngredient);
         btnsubmit = (Button) findViewById(R.id.submit);
 
-       /* searchCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapter, View v,
-                                       int position, long id) {
-                // On selecting a spinner item
-                scategory = adapter.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
-        */
+        btnsubmit.setOnClickListener(this);
 
         try {
             URL urlCategory = new URL("http://www.thecocktaildb.com/api/json/v1/1/list.php?c=list");
             URL urlGlass = new URL("http://www.thecocktaildb.com/api/json/v1/1/list.php?g=list");
             URL urlIngredient = new URL("http://www.thecocktaildb.com/api/json/v1/1/list.php?i=list");
-            //URL urlAlcoholic = new URL("http://www.thecocktaildb.com/api/json/v1/1/list.php?a=list");
-
 
             HttpJsonRequest jsonCategory = new HttpJsonRequest(this, this);
             jsonCategory.execute(urlCategory);
@@ -63,8 +47,6 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
             jsonGlass.execute(urlGlass);
             HttpJsonRequest jsonIngredient = new HttpJsonRequest(this, this);
             jsonIngredient.execute(urlIngredient);
-            //HttpJsonRequest jsonAlcoholic = new HttpJsonRequest(this, this);
-            //jsonAlcoholic.execute(urlAlcoholic);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,6 +113,14 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
 
     public void onClick(View v) {
 
-       // Toast.makeText(this, "qdsqsd", Toast.LENGTH_SHORT).show();
+        HashMap<String,String> results = new HashMap<String,String>();
+
+        Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+
+        intent.putExtra("category",searchCategory.getSelectedItem().toString());
+        intent.putExtra("glass",searchGlass.getSelectedItem().toString());
+        intent.putExtra("ingredient",searchIngredient.getSelectedItem().toString());
+
+        startActivity(intent);
     }
 }
