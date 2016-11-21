@@ -40,7 +40,7 @@ public class Drink {
                     String ingredient = json.getString("strIngredient" + i);
                     String measure = json.getString("strMeasure" + i);
 
-                    if (ingredient != null) {
+                    if (!"".equals(ingredient)) {
                         this.ingredients.add(new Ingredient(ingredient, measure));
                     }
                 }
@@ -49,10 +49,6 @@ public class Drink {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public Drink() {
-
     }
 
     public int getId() {
