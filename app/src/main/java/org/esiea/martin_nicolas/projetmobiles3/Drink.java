@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by nicobas on 08/11/16.
+ * Classe pour les cocktails avec leurs caractéristiques
  */
 public class Drink {
     private int id;
@@ -17,6 +17,13 @@ public class Drink {
     private String imgageUrl;
     private ArrayList<Ingredient> ingredients;
 
+
+    /***
+     *
+     * Constructeur
+     * @param json objet json transformé en Drink
+     * @param isShort Si l'on charge l'objet pour la liste principale, on met is short a oui
+     */
     public Drink(JSONObject json, boolean isShort) {
         try {
             this.setId(json.getInt("idDrink"));
@@ -26,6 +33,7 @@ public class Drink {
             if (this.getImgageUrl().equals("null"))
                 this.setImgageUrl("http://www.novelupdates.com/img/noimagefound.jpg");
 
+            //Si l'on charge l'objet pour les détails, on a besoin de plus d'informations ( catégorie, verre, ...)
             if (!isShort) {
                 this.setCategory(json.getString("strCategory"));
                 this.setAlcoholic(json.getString("strAlcoholic"));
@@ -112,6 +120,7 @@ public class Drink {
     public void setIngredients(ArrayList<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
+
 
     @Override
     public String toString() {

@@ -12,17 +12,33 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/***
+ * Adapter pour la liste des cocktails
+ */
 public class DrinkDataAdapter extends RecyclerView.Adapter<DrinkDataAdapter.ViewHolder> {
     private ArrayList<Drink> drinks;
     private Context context;
     private OnDrinkClickListener listener;
 
+    /***
+     * Constructeur
+     * @param context
+     * @param drinks liste des cocktails chargés
+     * @param listener listener pour le click d'un cocktail
+     */
     public DrinkDataAdapter(Context context, ArrayList<Drink> drinks, OnDrinkClickListener listener) {
         this.drinks = drinks;
         this.context = context;
         this.listener = listener;
     }
 
+
+    /***
+     *
+     * @param viewGroup
+     * @param i
+     * @return viewHolder du cocktail avec son nom et son image
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_drink_layout, viewGroup, false);
@@ -54,6 +70,11 @@ public class DrinkDataAdapter extends RecyclerView.Adapter<DrinkDataAdapter.View
             img_drink = (ImageView) view.findViewById(R.id.img_drink);
         }
 
+        /***
+         * on ajoute le nom du cocktail, l'image et l'action
+         * @param item cocktail
+         * @param listener
+         */
         public void bind(final Drink item, final OnDrinkClickListener listener) {
             tv_drink.setText(item.getName());
             Picasso.with(context).load(item.getImgageUrl()).into(img_drink);

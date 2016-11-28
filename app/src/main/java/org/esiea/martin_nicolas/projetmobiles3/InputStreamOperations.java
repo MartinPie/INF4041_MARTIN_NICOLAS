@@ -3,14 +3,11 @@ package org.esiea.martin_nicolas.projetmobiles3;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by nicobas on 08/11/16.
- */
 public class InputStreamOperations {
     /**
-     * @param in      : buffer with the php result
-     * @param bufSize : size of the buffer
-     * @return : the string corresponding to the buffer
+     * @param in      : le buffer
+     * @param bufSize : taille du buffer
+     * @return : la chaine correspondant au buffer
      */
     public static String InputStreamToString(InputStream in, int bufSize) {
         final StringBuilder out = new StringBuilder();
@@ -27,8 +24,8 @@ public class InputStreamOperations {
     }
 
     /**
-     * @param in : buffer with the php result
-     * @return : the string corresponding to the buffer
+     * @param in : le buffer
+     * @return : la chaine correspondant au buffer
      */
     public static String InputStreamToString(InputStream in) {
         // On appelle la methode precedente avec une taille de buffer par defaut

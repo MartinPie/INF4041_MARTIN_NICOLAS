@@ -29,6 +29,7 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        //Récupération des éléments
         searchCategory = (Spinner) findViewById(R.id.searchCategory);
         searchGlass = (Spinner) findViewById(R.id.searchGlass);
         searchIngredient = (Spinner) findViewById(R.id.searchIngredient);
@@ -38,6 +39,7 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
 
         btnsubmit.setOnClickListener(this);
 
+        //Récupération des listes catégorie, verres et ingrédients à partir de l'api
         try {
             URL urlCategory = new URL("http://www.thecocktaildb.com/api/json/v1/1/list.php?c=list");
             URL urlGlass = new URL("http://www.thecocktaildb.com/api/json/v1/1/list.php?g=list");
@@ -56,6 +58,10 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
 
     }
 
+    /***
+     *
+     * @param jsonObject json de la liste récupérée
+     */
     public void OnGetJson(JSONObject jsonObject) {
 
         ArrayList<String> list = new ArrayList<>();
@@ -65,6 +71,7 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
             // On récupère le tableau d'objets qui nous concernent
             JSONArray array = jsonObject.getJSONArray("drinks");
 
+            //On teste de quelle liste il s'agit (catégorie, verre ou ingrédient)
             if (array.length() > 0) {
 
                 if (!new JSONObject(array.getString(0)).isNull("strCategory")) {
@@ -93,11 +100,12 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+    //On crée un adapter avec la liste
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        //On Attribue la liste avec le spinner correspondant
         switch (typeList) {
             case "strCategory":
                 searchCategory.setAdapter(adapter);
@@ -113,12 +121,17 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
         }
     }
 
+    /***
+     * Action du click sur le bouton Submit
+     *
+     */
     public void onClick(View v) {
 
         HashMap<String, String> results = new HashMap<String, String>();
 
         Intent intent = new Intent(SearchActivity.this, MainActivity.class);
 
+        //On envoie toutes les infos récupérées
         intent.putExtra("category", searchCategory.getSelectedItem().toString());
         intent.putExtra("glass", searchGlass.getSelectedItem().toString());
         intent.putExtra("ingredient", searchIngredient.getSelectedItem().toString());

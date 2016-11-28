@@ -23,6 +23,12 @@ public class IngredientDataAdapter extends RecyclerView.Adapter<IngredientDataAd
         this.context = context;
     }
 
+    /***
+     *
+     * @param viewGroup
+     * @param i
+     * @return viewHolder de l'ingrédient
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_ingredient_layout, viewGroup, false);
@@ -51,6 +57,10 @@ public class IngredientDataAdapter extends RecyclerView.Adapter<IngredientDataAd
             measure_ingredient = (TextView) view.findViewById(R.id.measure_ingredient);
         }
 
+        /***
+         * On ajoute le nom de l'ingrédient, son image et sa mesure
+         * @param item Ingrédient
+         */
         public void bind(final Ingredient item) {
             try {
                 name_ingredient.setText(item.getName());

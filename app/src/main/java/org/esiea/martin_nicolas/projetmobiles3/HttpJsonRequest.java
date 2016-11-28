@@ -10,6 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+/***
+ * Service récupérant les données de l'api
+ */
 public class HttpJsonRequest extends AsyncTask<URL, Integer, Void> {
 
     private OnGetJsonListener listener;
@@ -26,6 +29,7 @@ public class HttpJsonRequest extends AsyncTask<URL, Integer, Void> {
         final ArrayList<Drink> drinks = new ArrayList<Drink>();
 
         try {
+            //Connection et création du buffer pour le json
             URL url = arg0[0];
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.connect();
@@ -33,6 +37,7 @@ public class HttpJsonRequest extends AsyncTask<URL, Integer, Void> {
 
             String result = InputStreamOperations.InputStreamToString(inputStream);
 
+            //Ici on a notre Objet json
             final JSONObject jsonObject = new JSONObject(result);
 
             activity.runOnUiThread(new Runnable() {

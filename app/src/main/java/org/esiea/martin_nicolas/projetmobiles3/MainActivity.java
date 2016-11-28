@@ -8,23 +8,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.OnDrinkClickListener{
 
@@ -39,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
 
         drinks = new ArrayList<>();
 
+        //Récupération des éléments
         this.recyclerView = (RecyclerView) findViewById(R.id.drinks_recycler_view);
         this.recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
@@ -51,12 +45,14 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
 
         Intent intent = getIntent();
 
+        //On récupère les éléments de recherche s'il y en a
         String category = intent .getStringExtra("category");
         String glass = intent .getStringExtra("glass");
         String ingredient = intent .getStringExtra("ingredient");
         String name = intent .getStringExtra("name");
 
 
+        //Si l'on est en recherche, le lien de l'api change pour être filtré
         if (glass != null || category != null || ingredient != null) {
 
             if (name != null) {
@@ -73,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
             }
 
         } else {
+            //Sinon on affiche tout
             jsonIntent.putExtra(JsonPullService.URLS[4], "http://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic");
         }
         startService(jsonIntent);
@@ -97,75 +94,28 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
     private RecyclerView recyclerView;
     private ArrayList<Drink> drinks;
 
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        try {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            drinks = new ArrayList<>();
-
-            this.recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
-            this.recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
-            this.recyclerView.setLayoutManager(layoutManager);
-
-            Intent intent = getIntent();
-
-            String category = intent.getStringExtra("category");
-            String glass = intent.getStringExtra("glass");
-            String ingredient = intent.getStringExtra("ingredient");
-            String name = intent.getStringExtra("name");
-
-
-            if (glass != null || category != null || ingredient != null) {
-
-                if (!glass.equals(getResources().getString(R.string.glass))) {
-                    URL urlGlass = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?g=" + glass.replace(" ", "_"));
-                    HttpJsonRequest hGlass = new HttpJsonRequest(this, this);
-                    hGlass.execute(urlGlass);
-                }
-
-                if (!category.equals(getResources().getString(R.string.category))) {
-                    URL urlCategory = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=" + category.replace(" ", "_"));
-                    HttpJsonRequest hCategory = new HttpJsonRequest(this, this);
-                    hCategory.execute(urlCategory);
-                }
-                if (!ingredient.equals(getResources().getString(R.string.ingredient))) {
-                    URL urlIngredient = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=" + ingredient.replace(" ", "_"));
-                    HttpJsonRequest hIngredient = new HttpJsonRequest(this, this);
-                    hIngredient.execute(urlIngredient);
-                }
-
-            } else {
-
-                URL url = new URL("http://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic");
-
-                HttpJsonRequest h = new HttpJsonRequest(this, this);
-                h.execute(url);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    */
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
 
+    /***
+     * Actions du menuItem
+     * @param item item cliqué
+     *
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
 
         switch (item.getItemId()) {
+            //Bouton chercher
             case R.id.menu_search:
                 intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
                 return true;
+            //Bouton aléatoire
             case R.id.menu_random:
                 intent = new Intent(MainActivity.this, DrinkActivity.class);
                 intent.putExtra("drink_id", 0);
@@ -176,6 +126,10 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
         }
     }
 
+    /***
+     * Lorsque l'on clique sur un cocktail on commence une nouvelle activity avec l'id en paramètre
+     * @param item cocktail
+     */
     public void onItemClick(Drink item) {
         Intent intent = new Intent(MainActivity.this, DrinkActivity.class);
         intent.putExtra("drink_id", item.getId());
@@ -215,11 +169,6 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
                         i--;
                     }
                 }
-
-//                this.recyclerView.removeAllViews();
-//                ((DrinkDataAdapter)this.recyclerView.getAdapter()).setDrinks(this.drinks);
-
-
             }
 
 
@@ -251,14 +200,19 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
         }
     }
 
+    /***
+     * Notification lorsque l'on atteint la page de la liste des cocktails
+     */
     private final void createNotification(){
         final NotificationManager mNotification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
+        //Création d'un intent de callback pour la notification
         final Intent launchNotifiactionIntent = new Intent(this, AboutActivity.class);
         final PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, launchNotifiactionIntent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+        //Construction de la notification
         Notification.Builder builder = new Notification.Builder(this)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.about)
@@ -266,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
                 .setContentText(getResources().getString(R.string.notification_desc))
                 .setContentIntent(pendingIntent);
 
+        //Affichage de la notif
         mNotification.notify(0, builder.build());
     }
-
 }

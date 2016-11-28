@@ -18,6 +18,9 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
+/***
+ * Activité affichant les détails d'un cocktail
+ */
 public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.OnGetJsonListener {
 
     public Drink drink;
@@ -31,6 +34,7 @@ public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.
 
             Intent intent = getIntent();
 
+            //Récupération des éléments
             this.recyclerView = (RecyclerView) findViewById(R.id.ingredients_recycler_view);
             this.recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -41,6 +45,7 @@ public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.
 
                 URL url;
 
+                //Si l'id est égal à 0, l'utilisateur a cliqué sur "Random", on utilise donc la fonction de l'api
                 if (drinkId > 0)
                     url = new URL("http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=" + drinkId);
                 else
@@ -55,6 +60,12 @@ public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.
         }
     }
 
+    /***
+     * ici on récupère le json de l'objet et on le transforme avec le constructeur de Drink
+     * (on met le isShort a false car on veut toutes les informations)
+     *
+     * @param jsonObject objet json du cocktail
+     */
     public void OnGetJson(JSONObject jsonObject) {
         try {
             JSONObject drinkObj = new JSONObject(jsonObject.getJSONArray("drinks").getString(0));
@@ -68,11 +79,14 @@ public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.
         }
     }
 
+
     public void initView() {
+        //Petit toast avec le nom du cocktail
         Toast.makeText(this, this.drink.getName(), Toast.LENGTH_SHORT).show();
 
         ImageView img = (ImageView) findViewById(R.id.detail_img_drink);
 
+        //Bouton servant à aller sur google pour chercher où trouver le cocktail
         Button button = (Button) findViewById(R.id.btn_internet_drink);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +107,7 @@ public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.
         TextView glassView = (TextView) findViewById(R.id.detail_glass);
         TextView instructionView = (TextView) findViewById(R.id.detail_instruction);
 
+        //Picasso servant à afficher l'image
         Picasso.with(this).load(this.drink.getImgageUrl()).into(img);
 
         nameView.setText(this.drink.getName());
@@ -101,6 +116,7 @@ public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.
         glassView.setText(this.drink.getGlass());
         instructionView.setText(this.drink.getInstruction());
 
+        //Adapter servant pour les ingrédients
         IngredientDataAdapter adapter = new IngredientDataAdapter(getApplicationContext(), this.drink.getIngredients());
         this.recyclerView.setAdapter(adapter);
     }

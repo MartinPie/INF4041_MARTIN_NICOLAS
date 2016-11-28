@@ -1,7 +1,7 @@
 package org.esiea.martin_nicolas.projetmobiles3;
 
 /**
- * Created by nicobas on 08/11/16.
+ * Classe pour les ingrédients avec son nom et sa mesure
  */
 public class Ingredient {
     private String name;

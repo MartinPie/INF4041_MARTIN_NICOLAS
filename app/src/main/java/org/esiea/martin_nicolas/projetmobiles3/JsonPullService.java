@@ -66,6 +66,7 @@ public class JsonPullService extends IntentService {
                 broadcastIntent.putExtra(SOURCE_URLS[i], result.toString());
             }
         }
+        //on envoie le broadcast
         sendBroadcast(broadcastIntent);
 
     }
