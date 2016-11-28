@@ -3,8 +3,6 @@ package org.esiea.martin_nicolas.projetmobiles3;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by nicobas on 08/11/16.

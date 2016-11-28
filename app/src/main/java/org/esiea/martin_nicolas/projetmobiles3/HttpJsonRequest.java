@@ -3,7 +3,6 @@ package org.esiea.martin_nicolas.projetmobiles3;
 import android.app.Activity;
 import android.os.AsyncTask;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.InputStream;

@@ -1,9 +1,5 @@
 package org.esiea.martin_nicolas.projetmobiles3;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
-
 /**
  * Created by nicobas on 08/11/16.
  */
@@ -16,19 +12,19 @@ public class Ingredient {
         this.measure = measure;
     }
 
-    public void setMeasure(String measure) {
-        this.measure = measure;
-    }
-
     public String getMeasure() {
         return measure;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMeasure(String measure) {
+        this.measure = measure;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

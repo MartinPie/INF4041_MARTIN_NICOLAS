@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import org.json.JSONArray;
@@ -20,9 +21,8 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
     Spinner searchCategory;
     Spinner searchIngredient;
     Spinner searchGlass;
+    EditText searchName;
     Button btnsubmit;
-
-    String scategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,8 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
         searchGlass = (Spinner) findViewById(R.id.searchGlass);
         searchIngredient = (Spinner) findViewById(R.id.searchIngredient);
         btnsubmit = (Button) findViewById(R.id.submit);
+        searchName = (EditText) findViewById(R.id.searchName);
+
 
         btnsubmit.setOnClickListener(this);
 
@@ -57,7 +59,7 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
     public void OnGetJson(JSONObject jsonObject) {
 
         ArrayList<String> list = new ArrayList<>();
-        String typeList= "";
+        String typeList = "";
 
         try {
             // On récupère le tableau d'objets qui nous concernent
@@ -65,15 +67,15 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
 
             if (array.length() > 0) {
 
-                if(!new JSONObject(array.getString(0)).isNull("strCategory")){
+                if (!new JSONObject(array.getString(0)).isNull("strCategory")) {
                     typeList = "strCategory";
                     list.add(getResources().getString(R.string.category));
                 }
-                if(!new JSONObject(array.getString(0)).isNull("strGlass")){
+                if (!new JSONObject(array.getString(0)).isNull("strGlass")) {
                     typeList = "strGlass";
                     list.add(getResources().getString(R.string.glass));
                 }
-                if(!new JSONObject(array.getString(0)).isNull("strIngredient1")){
+                if (!new JSONObject(array.getString(0)).isNull("strIngredient1")) {
                     typeList = "strIngredient1";
                     list.add(getResources().getString(R.string.ingredient));
                 }
@@ -88,7 +90,7 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -96,7 +98,7 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
                 android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        switch (typeList){
+        switch (typeList) {
             case "strCategory":
                 searchCategory.setAdapter(adapter);
                 break;
@@ -113,13 +115,14 @@ public class SearchActivity extends AppCompatActivity implements HttpJsonRequest
 
     public void onClick(View v) {
 
-        HashMap<String,String> results = new HashMap<String,String>();
+        HashMap<String, String> results = new HashMap<String, String>();
 
         Intent intent = new Intent(SearchActivity.this, MainActivity.class);
 
-        intent.putExtra("category",searchCategory.getSelectedItem().toString());
-        intent.putExtra("glass",searchGlass.getSelectedItem().toString());
-        intent.putExtra("ingredient",searchIngredient.getSelectedItem().toString());
+        intent.putExtra("category", searchCategory.getSelectedItem().toString());
+        intent.putExtra("glass", searchGlass.getSelectedItem().toString());
+        intent.putExtra("ingredient", searchIngredient.getSelectedItem().toString());
+        intent.putExtra("name", searchName.getText().toString());
 
         startActivity(intent);
     }

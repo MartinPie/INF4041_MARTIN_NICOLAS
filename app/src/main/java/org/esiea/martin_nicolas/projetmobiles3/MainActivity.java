@@ -5,44 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
-public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.OnDrinkClickListener{
-
-    public class MyReceiver extends BroadcastReceiver {
-        public static final String ACTION_RESP = "com.myapp.intent.action.TEXT_TO_DISPLAY";
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String text = intent.getStringExtra(JsonPullService.SOURCE_URL);
-
-            try {
-                JSONObject jsonObject = new JSONObject(text);
-                OnGetJson(jsonObject);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.OnDrinkClickListener {
 
     private MyReceiver receiver;
+    private RecyclerView recyclerView;
+    private ArrayList<Drink> drinks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,26 +41,29 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
 
         Intent intent = getIntent();
 
-        String category = intent .getStringExtra("category");
-        String glass = intent .getStringExtra("glass");
-        String ingredient = intent .getStringExtra("ingredient");
-        String name = intent .getStringExtra("name");
+        String category = intent.getStringExtra("category");
+        String glass = intent.getStringExtra("glass");
+        String ingredient = intent.getStringExtra("ingredient");
+        String name = intent.getStringExtra("name");
 
 
-        if (glass != null || category != null || ingredient != null) {
+        if (glass != null || category != null || ingredient != null || name !=null) {
 
+            if (name != null) {
+                jsonIntent.putExtra(JsonPullService.URLS[3], "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + name.replace(" ","_"));
+            }
             if (!glass.equals(getResources().getString(R.string.glass))) {
-                jsonIntent.putExtra(JsonPullService.URL, "http://www.thecocktaildb.com/api/json/v1/1/filter.php?g=" + glass.replace(" ", "_"));
+                jsonIntent.putExtra(JsonPullService.URLS[0], "http://www.thecocktaildb.com/api/json/v1/1/filter.php?g=" + glass.replace(" ", "_"));
             }
             if (!category.equals(getResources().getString(R.string.category))) {
-                jsonIntent.putExtra(JsonPullService.URL, "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=" + category.replace(" ", "_"));
+                jsonIntent.putExtra(JsonPullService.URLS[1], "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=" + category.replace(" ", "_"));
             }
             if (!ingredient.equals(getResources().getString(R.string.ingredient))) {
-                jsonIntent.putExtra(JsonPullService.URL, "http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=" + ingredient.replace(" ", "_"));
+                jsonIntent.putExtra(JsonPullService.URLS[2], "http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=" + ingredient.replace(" ", "_"));
             }
 
         } else {
-            jsonIntent.putExtra(JsonPullService.URL, "http://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic");
+            jsonIntent.putExtra(JsonPullService.URLS[4], "http://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic");
         }
         startService(jsonIntent);
     }
@@ -103,8 +84,11 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
         unregisterReceiver(receiver);
     }
 
-    private RecyclerView recyclerView;
-    private ArrayList<Drink> drinks;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
 
     /*
     @Override
@@ -161,12 +145,6 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
     */
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
 
@@ -190,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
         intent.putExtra("drink_id", item.getId());
         startActivity(intent);
     }
-
 
     public void OnGetJson(JSONObject jsonObject) {
 
@@ -234,6 +211,29 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public class MyReceiver extends BroadcastReceiver {
+
+        public static final String ACTION_RESP = "filter";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+
+            for (int i = 0; i < JsonPullService.SOURCE_URLS.length; i++) {
+                String text = intent.getStringExtra(JsonPullService.SOURCE_URLS[i]);
+                if (text != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(text);
+                        OnGetJson(jsonObject);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 

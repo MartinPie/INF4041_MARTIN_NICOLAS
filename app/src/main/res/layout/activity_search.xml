@@ -4,49 +4,64 @@
     android:id="@+id/activity_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context="org.esiea.martin_nicolas.projetmobiles3.SearchActivity"
-    android:orientation="vertical">
+    android:weightSum="1">
 
     <EditText
         android:id="@+id/searchName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/name_search"
-        android:inputType="text"/>
+        android:textAlignment="center"
+        android:inputType="text"
+        android:layout_marginTop="40sp"
+        android:layout_marginBottom="40sp"/>
 
     <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/searchCategory"
-        android:spinnerMode="dialog"
-        android:prompt="@string/category_prompt"/>
-
-    <Spinner
+        android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:prompt="@string/category_prompt"
+        android:spinnerMode="dialog"
+        android:padding="20sp"
+        android:layout_marginBottom="20sp"/>/>
+
+    <Spinner
         android:id="@+id/searchGlass"
-        android:spinnerMode="dialog"
-        android:prompt="@string/glass_prompt"
-        />
-
-    <Spinner
+        android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/searchIngredient"
+        android:prompt="@string/glass_prompt"
         android:spinnerMode="dialog"
+        android:padding="20sp"
+        android:layout_marginBottom="20sp"/>/>
+
+    <Spinner
+        android:id="@+id/searchIngredient"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
         android:prompt="@string/ingredient_prompt"
-        />
+        android:spinnerMode="dialog"
+        android:padding="20sp"
+        android:layout_marginBottom="20sp"/> />
 
     <Button
         android:id="@+id/submit"
-        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/submit"
         android:textSize="15sp"
-      />
+        style="@android:style/Widget.Button"
+        android:width="100sp"
+        android:padding="20sp"/>
 
 </LinearLayout>

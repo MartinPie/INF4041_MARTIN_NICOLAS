@@ -2,9 +2,8 @@ package org.esiea.martin_nicolas.projetmobiles3;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.net.URL;
-import java.util.ArrayList;
 
 public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.OnGetJsonListener {
 

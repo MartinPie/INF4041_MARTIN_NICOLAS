@@ -12,7 +12,6 @@ import com.squareup.picasso.Picasso;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class IngredientDataAdapter extends RecyclerView.Adapter<IngredientDataAdapter.ViewHolder> {
     private ArrayList<Ingredient> ingredients;

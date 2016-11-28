@@ -17,11 +17,7 @@ public class DrinkDataAdapter extends RecyclerView.Adapter<DrinkDataAdapter.View
     private Context context;
     private OnDrinkClickListener listener;
 
-    public interface OnDrinkClickListener {
-        void onItemClick(Drink item);
-    }
-
-    public DrinkDataAdapter(Context context,ArrayList<Drink> drinks, OnDrinkClickListener listener) {
+    public DrinkDataAdapter(Context context, ArrayList<Drink> drinks, OnDrinkClickListener listener) {
         this.drinks = drinks;
         this.context = context;
         this.listener = listener;
@@ -43,6 +39,10 @@ public class DrinkDataAdapter extends RecyclerView.Adapter<DrinkDataAdapter.View
         return this.drinks.size();
     }
 
+    public interface OnDrinkClickListener {
+        void onItemClick(Drink item);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_drink;
         private ImageView img_drink;
@@ -58,7 +58,8 @@ public class DrinkDataAdapter extends RecyclerView.Adapter<DrinkDataAdapter.View
             tv_drink.setText(item.getName());
             Picasso.with(context).load(item.getImgageUrl()).into(img_drink);
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     listener.onItemClick(item);
                 }
             });
