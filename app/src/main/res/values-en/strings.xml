@@ -21,4 +21,8 @@
     <string name="instructions_label">Instructions :</string>
     <string name="ingredients_label">Ingregients :</string>
 
+    <string name="notification">CockTail notification</string>
+    <string name="notification_title">About CockTail</string>
+    <string name="notification_desc">All informations about the CockTail appli</string>
+
 </resources>

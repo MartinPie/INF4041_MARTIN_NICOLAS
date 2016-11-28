@@ -18,9 +18,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".DrinkActivity" />
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SearchActivity" />
 
-        <service android:name=".JsonPullService"></service>
+        <service android:name=".JsonPullService" />
+
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>

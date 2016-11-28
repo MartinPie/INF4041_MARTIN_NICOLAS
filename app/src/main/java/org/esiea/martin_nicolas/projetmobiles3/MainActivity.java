@@ -1,31 +1,41 @@
 package org.esiea.martin_nicolas.projetmobiles3;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
-public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.OnDrinkClickListener {
+public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.OnDrinkClickListener{
 
     private MyReceiver receiver;
-    private RecyclerView recyclerView;
-    private ArrayList<Drink> drinks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        createNotification();
 
         drinks = new ArrayList<>();
 
@@ -41,13 +51,13 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
 
         Intent intent = getIntent();
 
-        String category = intent.getStringExtra("category");
-        String glass = intent.getStringExtra("glass");
-        String ingredient = intent.getStringExtra("ingredient");
-        String name = intent.getStringExtra("name");
+        String category = intent .getStringExtra("category");
+        String glass = intent .getStringExtra("glass");
+        String ingredient = intent .getStringExtra("ingredient");
+        String name = intent .getStringExtra("name");
 
 
-        if (glass != null || category != null || ingredient != null || name !=null) {
+        if (glass != null || category != null || ingredient != null) {
 
             if (name != null) {
                 jsonIntent.putExtra(JsonPullService.URLS[3], "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + name.replace(" ","_"));
@@ -84,11 +94,8 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
         unregisterReceiver(receiver);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
+    private RecyclerView recyclerView;
+    private ArrayList<Drink> drinks;
 
     /*
     @Override
@@ -145,6 +152,12 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
     */
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
 
@@ -168,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
         intent.putExtra("drink_id", item.getId());
         startActivity(intent);
     }
+
 
     public void OnGetJson(JSONObject jsonObject) {
 
@@ -235,6 +249,24 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
                 }
             }
         }
+    }
+
+    private final void createNotification(){
+        final NotificationManager mNotification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        final Intent launchNotifiactionIntent = new Intent(this, AboutActivity.class);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, launchNotifiactionIntent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Notification.Builder builder = new Notification.Builder(this)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.about)
+                .setContentTitle(getResources().getString(R.string.notification_title))
+                .setContentText(getResources().getString(R.string.notification_desc))
+                .setContentIntent(pendingIntent);
+
+        mNotification.notify(0, builder.build());
     }
 
 }
