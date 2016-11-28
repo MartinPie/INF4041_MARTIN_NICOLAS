@@ -41,7 +41,12 @@ public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.
             if (intent != null) {
                 int drinkId = intent.getIntExtra("drink_id", 0);
 
-                URL url = new URL("http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=" + drinkId);
+                URL url;
+
+                if (drinkId > 0)
+                    url = new URL("http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=" + drinkId);
+                else
+                    url = new URL("http://www.thecocktaildb.com/api/json/v1/1/random.php");
 
                 HttpJsonRequest h = new HttpJsonRequest(this, this);
                 h.execute(url);
@@ -70,7 +75,7 @@ public class DrinkActivity extends AppCompatActivity implements HttpJsonRequest.
 
         ImageView img = (ImageView) findViewById(R.id.detail_img_drink);
 
-        Button button= (Button) findViewById(R.id.btn_internet_drink);
+        Button button = (Button) findViewById(R.id.btn_internet_drink);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

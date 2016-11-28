@@ -168,16 +168,17 @@ public class MainActivity extends AppCompatActivity implements DrinkDataAdapter.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+
         switch (item.getItemId()) {
-            case R.id.menu_refresh:
-                Toast.makeText(this, getResources().getString(R.string.menu_refresh), Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.menu_search:
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.menu_random:
-                Toast.makeText(this, getResources().getString(R.string.menu_random), Toast.LENGTH_SHORT).show();
+                intent = new Intent(MainActivity.this, DrinkActivity.class);
+                intent.putExtra("drink_id", 0);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

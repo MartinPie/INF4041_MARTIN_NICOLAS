@@ -12,10 +12,4 @@
         resauto:showAsAction="ifRoom"
         android:title="@string/menu_search"
         android:icon="@drawable/search"/>
-    <item
-        android:id="@+id/menu_refresh"
-        resauto:showAsAction="ifRoom"
-        android:title="@string/menu_refresh"
-        android:icon="@drawable/refresh"/>
-
 </menu>
