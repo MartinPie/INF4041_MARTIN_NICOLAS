@@ -24,4 +24,14 @@
     <string name="notification">Notification Cock\'Tail</string>
     <string name="notification_title">A propos de Cock\'Tail</string>
     <string name="notification_desc">Toutes les infos sur l\'appli Cock\'Tail</string>
+
+    <string name="about">
+        Cette application regroupe des recettes de cocktails\n
+        \n
+        Application développée par :\n
+        Pierre MARTIN (4A CFA)\n
+        Bastien NICOLAS (4A CFA)\n
+        \n
+        Lien github : https://github.com/MartinPie/INF4041_MARTIN_NICOLAS.git
+    </string>
 </resources>

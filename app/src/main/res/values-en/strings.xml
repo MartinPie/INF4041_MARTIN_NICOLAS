@@ -25,4 +25,14 @@
     <string name="notification_title">About CockTail</string>
     <string name="notification_desc">All informations about the CockTail appli</string>
 
+     <string name="about">
+        This app brings together cocktail recipes\n
+        \n
+        Application developed by :\n
+        Pierre MARTIN (4A CFA)\n
+        Bastien NICOLAS (4A CFA)\n
+        \n
+        Github link : https://github.com/MartinPie/INF4041_MARTIN_NICOLAS.git
+    </string>
+
 </resources>

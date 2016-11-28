@@ -9,4 +9,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.esiea.martin_nicolas.projetmobiles3.AboutActivity">
 
+    <TextView
+        android:text="@string/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>
